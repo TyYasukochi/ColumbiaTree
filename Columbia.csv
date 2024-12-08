@@ -1,6 +1,5 @@
 Columbia River,River,Snake River,River,Willamette River,River
 Snake River,River,Clearwater River,River,Deschutes River,River
-Clearwater River,River,,,,
-Deschutes River,River,,,,
-Grand Coulee Dam,Dam,,,,
-Lake Roosevelt,Lake,,,,
+Clearwater River,River,Grand Coulee Dam,Dam,
+Grand Coulee Dam,Dam,Lake Roosevelt,Lake,
+Deschutes River,River,,,

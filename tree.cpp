@@ -56,14 +56,14 @@ class binaryTree {
 
         cout << "You are at: " << node->name << " (" << node->type << ")\n";
 
-        // When there is a left or right child
-        if (node->left || node->right) {
+        // When there is a left/right child or prev parent
+        if (node->left || node->right || node->parent) {
 
             cout << "Choose a direction:\n";
 
             if (node->left) cout << "1. Left (" << node->left->name << ")\n";
-            if (node->right) cout << "2. Right (" << node->right->name << ")\n";
-            if (node->parent) cout << "3. Backward (" << node->parent->name << ")\n";
+            if (node->right) cout << "2. Right (" << node->right->name <<")\n";
+            if (node->parent) cout << "3. Backward (" << node->parent->name <<")\n";
 
             int choice;
             cin >> choice;
@@ -73,11 +73,8 @@ class binaryTree {
             else if (choice == 2 && node->right) { traverse(node->right); }
             else if (choice == 3 && node->parent) { traverse(node->parent); }
             else { cout << "Invalid choice. Try again.\n"; }
-
-        } else {
-            cout << "No further tributaries from here.\n";
-        }
     }
+}
 
 //---------------------------------------------------------------------------------------------//
 
