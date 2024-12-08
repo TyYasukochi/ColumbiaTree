@@ -85,10 +85,6 @@ class binaryTree {
         string rootName;
 
         ifstream file(filename);
-        if (!file.is_open()) {
-            cout << "Failed to open file " << filename << endl;
-            return;
-        }
 
         map<string, Node*> nodes;
         string line, name, nameType, left, leftType, right, rightType;
@@ -106,12 +102,16 @@ class binaryTree {
             // Create/retrieve the current node
             if (nodes.find(name) == nodes.end()) {
                 nodes[name] = new Node(name, nameType);
+            } else {
+                nodes[name]->type = nameType;
             }
 
             // Create/retrieve the LEFT child
             if (!left.empty()) {
                 if (nodes.find(left) == nodes.end()) {
                     nodes[left] = new Node(left, leftType);
+                } else {
+                    nodes[left]->type = leftType; // Update type if node already exists
                 }
                 nodes[name]->left = nodes[left];
                 nodes[left]->parent = nodes[name];
@@ -120,21 +120,23 @@ class binaryTree {
             // Create/retrieve the RIGHT child
             if (!right.empty()) {
                 if (nodes.find(right) == nodes.end()) {
-                nodes[right] = new Node(right, rightType);
+                    nodes[right] = new Node(right, rightType);
+                } else {
+                    nodes[right]->type = rightType; // Update type if node already exists
+                }
+                nodes[name]->right = nodes[right];
+                nodes[right]->parent = nodes[name];
             }
-            nodes[name]->right = nodes[right];
-            nodes[right]->parent = nodes[name];
-        }
 
-            // Set root as the first node processed (if rootName is empty)
+            // Set root as the first node processed if rootName is empty
             if (rootName.empty()) {
                 rootName = name;
             }
         }
 
-        // Now that we've processed all nodes, set the root explicitly
+
         if (!rootName.empty() && nodes.find(rootName) != nodes.end()) {
-            defRoot(nodes[rootName]);  // Explicitly set root
+            defRoot(nodes[rootName]); // Explicitly set root
         }
 
         file.close();
