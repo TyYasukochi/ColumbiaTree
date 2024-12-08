@@ -11,11 +11,14 @@ using namespace std;
 class Node {
     public:
     string name;
+    string type;
     Node* left;
     Node* right;
+    Node* parent;
 
     // Constructor
-    Node(string& nodeName) : name(nodeName), left(nullptr), right(nullptr) {}
+    Node(string& nodeName, string nodeType = "River") 
+        : name(nodeName), type(nodeType), left(nullptr), right(nullptr), parent(nullptr) {}
 };
 
 //---------------------------------------------------------------------------------------------//
@@ -51,7 +54,7 @@ class binaryTree {
             return;
         }
 
-        cout << "You are at: " << node->name << "\n";
+        cout << "You are at: " << node->name << " (" << node->type << ")\n";
 
         // When there is a left or right child
         if (node->left || node->right) {
@@ -60,6 +63,7 @@ class binaryTree {
 
             if (node->left) cout << "1. Left (" << node->left->name << ")\n";
             if (node->right) cout << "2. Right (" << node->right->name << ")\n";
+            if (node->parent) cout << "3. Backward (" << node->parent->name << ")\n";
 
             int choice;
             cin >> choice;
@@ -67,6 +71,7 @@ class binaryTree {
             // Choices IO
             if (choice == 1 && node->left) { traverse(node->left); }
             else if (choice == 2 && node->right) { traverse(node->right); }
+            else if (choice == 3 && node->parent) { traverse(node->parent); }
             else { cout << "Invalid choice. Try again.\n"; }
 
         } else {
@@ -86,37 +91,40 @@ class binaryTree {
         }
 
         map<string, Node*> nodes;
-        string line, name, left, right;
+        string line, name, nameType, left, leftType, right, rightType;
 
         // Read each row
         while (getline(file, line)) {
             istringstream ss(line);
             getline(ss, name, ',');
+            getline(ss, nameType, ',');
             getline(ss, left, ',');
+            getline(ss, leftType, ',');
             getline(ss, right, ',');
-
-            cout << "Processing node: " << name << ", Left: " << left << ", Right: " << right << endl; // Debugging line
+            getline(ss, rightType, ',');
 
             // Create/retrieve the current node
             if (nodes.find(name) == nodes.end()) {
-                nodes[name] = new Node(name);
+                nodes[name] = new Node(name, nameType);
             }
 
             // Create/retrieve the LEFT child
             if (!left.empty()) {
                 if (nodes.find(left) == nodes.end()) {
-                    nodes[left] = new Node(left);
+                    nodes[left] = new Node(left, leftType);
                 }
                 nodes[name]->left = nodes[left];
+                nodes[left]->parent = nodes[name];
             }
 
             // Create/retrieve the RIGHT child
             if (!right.empty()) {
                 if (nodes.find(right) == nodes.end()) {
-                    nodes[right] = new Node(right);
-                }
-                nodes[name]->right = nodes[right];
+                nodes[right] = new Node(right, rightType);
             }
+            nodes[name]->right = nodes[right];
+            nodes[right]->parent = nodes[name];
+        }
 
             // Set root as the first node processed (if rootName is empty)
             if (rootName.empty()) {
