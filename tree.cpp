@@ -57,6 +57,14 @@ class BinaryTree {
         void setRoot(Node* root) {
             this->root = root;
         }
+
+        int size() {
+            return nodeMap.size();
+        }
+
+        unordered_map<string, Node*> getMap() {
+            return nodeMap;
+        }
 };
 
 //---------------------------------------------------------------------------------------------//
@@ -99,6 +107,47 @@ class TraversalLogic {
         void goToNode(Node* node) {
             currentNode = node;
         }
+
+        void printSplash() {
+            cout << endl << "----------------------------------------" << endl;
+            cout << "Welcome to the Columbia Watershed Tree!" << endl;
+            cout << "This tree is a representation of the Columbia Watershed." << endl;
+            cout << "You can navigate the tree by selecting options to go left, right, or back." << endl;
+            cout << "Each node has a name and information about the node." << endl;
+            cout << "Enjoy exploring the Columbia Watershed!" << endl;
+            cout << "----------------------------------------" << endl;
+            cout << "Select an option: " << endl << endl;
+            cout << "A) Tree Overview" << endl;
+            cout << "B) Start Traversal" << endl;
+            cout << "Q) Quit" << endl;
+        }
+
+        void printOverview() {
+            cout << endl;
+            cout << "This is a graphical overview of the Columbia Watershed Tree." << endl;
+            cout << "This implementation contains " << referenceTree.size() << " explorable branches, including:" << endl;
+            
+            int branchCount = 0;
+            int damCount = 0;
+            int tributaryCount = 0;
+            for (auto& node : referenceTree.getMap()) {
+                if (node.second->getType() == "Branch") {
+                    branchCount++;
+                } else if (node.second->getType() == "Dam") {
+                    damCount++;
+                } else if (node.second->getType() == "Tributary") {
+                    tributaryCount++;
+                }
+            }
+
+            cout << "* " << tributaryCount << " tributaries" << endl;
+            cout << "* " << damCount << " dams" << endl;
+            cout << "* " << branchCount << " branches" << endl << endl;
+            cout << "(type anything to return)" << endl;
+
+            string input;
+            cin >> input;
+        }
         
         void printInfo() {
             cout << endl << "------------- Current Node: -------------" << endl;
@@ -125,6 +174,22 @@ class TraversalLogic {
 
         void printLogic() {
             while (true) {
+                printSplash();
+                string input;
+                cin >> input;
+
+                if (input == "A" || input == "a") {
+                    printOverview();
+                } else if (input == "B" || input == "b") {
+                    break;
+                } else if (input == "Q" || input == "q") {
+                    return;
+                } else {
+                    cout << "Invalid input. Please try again." << endl;
+                }
+            }
+
+            while (true) {
                 printInfo();
                 string input;
                 cin >> input;
@@ -148,7 +213,7 @@ class TraversalLogic {
                         cout << "Invalid input. Please try again." << endl;
                     }
                 } else if (input == "Q" || input == "q") {
-                    break;
+                    return;
                 } else {
                     cout << "Invalid input. Please try again." << endl;
                 }
@@ -158,7 +223,7 @@ class TraversalLogic {
 
 //---------------------------------------------------------------------------------------------//
 
-/*int main() {
+int main() {
     BinaryTree columbiaWatershed;
     DataReader reader;
 
@@ -169,4 +234,3 @@ class TraversalLogic {
     
     return 0;   
 }
-*/
