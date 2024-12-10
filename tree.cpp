@@ -2,157 +2,170 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <map>
+#include <unordered_map>
 
 using namespace std;
 
 //---------------------------------------------------------------------------------------------//
 
 class Node {
-    public:
-    string name;
-    string type;
-    Node* left;
-    Node* right;
-    Node* parent;
+    private:
+        string id;
+        string parent;
+        string left;
+        string right;
+        string type;
+        string name;
+        string info;
 
-    // Constructor
-    Node(string& nodeName, string nodeType = "River") 
-        : name(nodeName), type(nodeType), left(nullptr), right(nullptr), parent(nullptr) {}
+    public:
+        Node(string& nodeID, string& nodeParent, string& nodeLeft, string& nodeRight, string& nodeType, string& nodeName, string& nodeInfo) 
+            : id(nodeID), parent(nodeParent), left(nodeLeft), right(nodeRight), type(nodeType), name(nodeName), info(nodeInfo) {}
+
+        string getID() { return id; }
+        string getParent() { return parent; }
+        string getLeft() { return left; }
+        string getRight() { return right; }
+        string getType() { return type; }
+        string getName() { return name; }
+        string getInfo() { return info; }
 };
 
 //---------------------------------------------------------------------------------------------//
 
-class binaryTree {
+class BinaryTree {
     private:
-    Node* root;
+        Node* root;
+        unordered_map<string, Node*> nodeMap;
 
     public:
-    // Constructor
-    binaryTree() : root(nullptr) {}
+        BinaryTree() : root(nullptr) {}
+        BinaryTree(Node* root) : root(root) {}
 
-//---------------------------------------------------------------------------------------------//
-
-    // Set root node
-    void defRoot(Node* node) {
-        root = node;
-        cout << "Root node set to: " << root->name << endl; // Debugging line
-    }
-
-//---------------------------------------------------------------------------------------------//
-
-    // Get starting point
-    Node* getRoot() {
-        return root;
-    }
-
-//---------------------------------------------------------------------------------------------//
-
-    void traverse(Node* node) {
-        if (!node) {
-            cout << "Tree is empty.\n"; // Debugging line
-            return;
+        void addNode(Node* node) {
+            nodeMap[node->getID()] = node;
         }
 
-        cout << "You are at: " << node->name << " (" << node->type << ")\n";
+        Node* getNode(string id) {
+            return nodeMap[id];
+        }
 
-        // When there is a left/right child or prev parent
-        if (node->left || node->right || node->parent) {
+        Node* getRoot() {
+            return root;
+        }
 
-            cout << "Choose a direction:\n";
-
-            if (node->left) cout << "1. Left (" << node->left->name << ")\n";
-            if (node->right) cout << "2. Right (" << node->right->name <<")\n";
-            if (node->parent) cout << "3. Backward (" << node->parent->name <<")\n";
-
-            int choice;
-            cin >> choice;
-
-            // Choices IO
-            if (choice == 1 && node->left) { traverse(node->left); }
-            else if (choice == 2 && node->right) { traverse(node->right); }
-            else if (choice == 3 && node->parent) { traverse(node->parent); }
-            else { cout << "Invalid choice. Try again.\n"; }
-    }
-}
+        void setRoot(Node* root) {
+            this->root = root;
+        }
+};
 
 //---------------------------------------------------------------------------------------------//
 
-    void readCSV(const string& filename) {
-        string rootName;
+class DataReader {
+    public:
+        void readCSV(const string& filename, BinaryTree& tree) {
+            ifstream file(filename);
+            string line, id, parent, left, right, type, name, info;
 
-        ifstream file(filename);
+            while (getline(file, line)) {
+                istringstream ss(line);
+                getline(ss, id, ',');
+                getline(ss, parent, ',');
+                getline(ss, left, ',');
+                getline(ss, right, ',');
+                getline(ss, type, ',');
+                getline(ss, name, ',');
+                getline(ss, info);
 
-        map<string, Node*> nodes;
-        string line, name, nameType, left, leftType, right, rightType;
+                Node* node = new Node(id, parent, left, right, type, name, info);
+                tree.addNode(node);
 
-        // Read each row
-        while (getline(file, line)) {
-            istringstream ss(line);
-            getline(ss, name, ',');
-            getline(ss, nameType, ',');
-            getline(ss, left, ',');
-            getline(ss, leftType, ',');
-            getline(ss, right, ',');
-            getline(ss, rightType, ',');
-
-            // Create/retrieve the current node
-            if (nodes.find(name) == nodes.end()) {
-                nodes[name] = new Node(name, nameType);
-            } else {
-                nodes[name]->type = nameType;
-            }
-
-            // Create/retrieve the LEFT child
-            if (!left.empty()) {
-                if (nodes.find(left) == nodes.end()) {
-                    nodes[left] = new Node(left, leftType);
-                } else {
-                    nodes[left]->type = leftType; // Update type if node already exists
+                if (parent.empty()) {
+                    tree.setRoot(node);
                 }
-                nodes[name]->left = nodes[left];
-                nodes[left]->parent = nodes[name];
             }
 
-            // Create/retrieve the RIGHT child
-            if (!right.empty()) {
-                if (nodes.find(right) == nodes.end()) {
-                    nodes[right] = new Node(right, rightType);
+            file.close();
+        }
+};
+
+//---------------------------------------------------------------------------------------------//
+
+class TraversalLogic {
+    private:
+        Node* currentNode;
+        BinaryTree& referenceTree;
+
+        void goToNode(Node* node) {
+            currentNode = node;
+        }
+        
+        void printInfo() {
+            cout << endl << "------------- Current Node: -------------" << endl;
+            cout << " NAME: " << currentNode->getName() << endl;
+            cout << " TYPE: " << currentNode->getType() << endl;
+            cout << " INFO: " << currentNode->getInfo() << endl;
+            cout << "----------------------------------------" << endl;
+
+            cout << "Select an option: " << endl << endl;
+            if (!currentNode->getLeft().empty()) {
+                cout << "A) Go Left to " << referenceTree.getNode(currentNode->getLeft())->getName() << endl;
+            }
+            if (!currentNode->getRight().empty()) {
+                cout << "B) Go Right to " << referenceTree.getNode(currentNode->getRight())->getName() << endl;
+            }
+            if (!currentNode->getParent().empty()) {
+                cout << "C) Go Back to " << referenceTree.getNode(currentNode->getParent())->getName() << endl;
+            }
+            cout << "Q) Quit" << endl;
+            
+        }
+    public:
+        TraversalLogic(Node* root, BinaryTree& tree) : currentNode(root), referenceTree(tree) {}
+
+        void printLogic() {
+            while (true) {
+                printInfo();
+                string input;
+                cin >> input;
+                
+                if (input == "A" || input == "a") {
+                    if (!currentNode->getLeft().empty()) {
+                        goToNode(referenceTree.getNode(currentNode->getLeft()));
+                    } else {
+                        cout << "Invalid input. Please try again." << endl;
+                    }
+                } else if (input == "B" || input == "b") {
+                    if (!currentNode->getRight().empty()) {
+                        goToNode(referenceTree.getNode(currentNode->getRight()));
+                    } else {
+                        cout << "Invalid input. Please try again." << endl;
+                    }
+                } else if (input == "C" || input == "c") {
+                    if (!currentNode->getParent().empty()) {
+                        goToNode(referenceTree.getNode(currentNode->getParent()));
+                    } else {
+                        cout << "Invalid input. Please try again." << endl;
+                    }
+                } else if (input == "Q" || input == "q") {
+                    break;
                 } else {
-                    nodes[right]->type = rightType; // Update type if node already exists
+                    cout << "Invalid input. Please try again." << endl;
                 }
-                nodes[name]->right = nodes[right];
-                nodes[right]->parent = nodes[name];
-            }
-
-            // Set root as the first node processed if rootName is empty
-            if (rootName.empty()) {
-                rootName = name;
             }
         }
-
-
-        if (!rootName.empty() && nodes.find(rootName) != nodes.end()) {
-            defRoot(nodes[rootName]); // Explicitly set root
-        }
-
-        file.close();
-    }
 };
 
 //---------------------------------------------------------------------------------------------//
 
 int main() {
-    binaryTree columbiaWatershed;
-    columbiaWatershed.readCSV("Columbia.csv");
+    BinaryTree columbiaWatershed;
+    DataReader reader;
 
-    // Check if root is set correctly
-    if (columbiaWatershed.getRoot() != nullptr) {
-        cout << "Starting traversal from root node: " << columbiaWatershed.getRoot()->name << endl; // Debugging line
-        columbiaWatershed.traverse(columbiaWatershed.getRoot());
-    } else {
-        cout << "Root is not set. Exiting program.\n";
-    }
+    reader.readCSV("Columbia.csv", columbiaWatershed);
+    TraversalLogic logic(columbiaWatershed.getRoot(), columbiaWatershed);
+    
+    logic.printLogic();
     
     return 0;   
 }

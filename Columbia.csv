@@ -1,5 +1,35 @@
-Columbia River,River,Snake River,River,Willamette River,River
-Snake River,River,Clearwater River,River,Deschutes River,River
-Clearwater River,River,Grand Coulee Dam,Dam,
-Grand Coulee Dam,Dam,Lake Roosevelt,Lake,
-Deschutes River,River,,,
+id,parent_id,left_child_id,right_child_id,type,name,info
+start,,,branch1,Branch,Columbia River,Welcome to the entrance of the Columbia River where it connects with the Pacific Ocean.
+branch1,start,branch2,river1,Branch,Columbia River,Here is the intersection between the Columbia River and its tributary the Cowlits River.
+river1,branch1,,,River,Cowlits River,"Draining southwestern Washington, it flows into the Columbia near Longview and supports vibrant salmon runs."
+branch2,branch1,river2,dam1,Branch,Columbia River,"Here is the intersection between the Columbia River, its tributary the Willamette River, and its first dam the Bonneville Dam."
+river2,branch2,,,River,Willamette River,"Draining much of western Oregon, it contributes significantly to the Columbia River's flow near Portland."
+dam1,branch2,,branch3,Dam,Bonneville Dam,"Built in 1937, it was the first dam on the Columbia River and is a major source of hydroelectric power and navigation."
+branch3,dam1,river3,dam2,Branch,Columbia River,"Here is the intersection between the Columbia River, its tributary the Deschutes River, and its second dam the John Day Dam."
+river3,branch3,,,River,Deschutes River,"Known for its unique geology and recreational opportunities, it flows into the Columbia near The Dalles"
+dam2,branch3,,dam3,Dam,John Day Dam,"Located upstream of The Dalles, it creates Lake Umatilla and produces significant hydropower."
+dam3,dam2,,branch4,Dam,McNary Dam,"Located near Umatilla, Oregon, it supports irrigation and navigation along the mid-Columbia."
+branch4,dam3,river4,branch5,Branch,Columbia River,Here is the intersection between the Columbia River and its tributary the Snake River.
+river4,branch4,,,River,The Snake River,"The Columbia's largest tributary, spanning 1,078 miles, is vital for irrigation, recreation, and hydropower in the Pacific Northwest."
+branch5,branch4,river5,river6,Branch,Columbia River,"Here is the intersection between the Columbia River, its tributary the Yakima River, and the Hanford Reach"
+river5,branch5,,dam4,River,The Hanford Reach,"The last free-flowing stretch of the Columbia in the U.S., it supports important salmon spawning grounds."
+river6,branch5,,,River,The Yakima River,"A key tributary in Washington, it supports significant agricultural irrigation in the Yakima Valley."
+dam4,river5,,branch6,Dam,Rocky Reach Dam,"Near Wenatchee, Washington, it features a fish viewing station to observe salmon migration."
+branch6,dam4,dam5,river7,Branch,Columbia River,"Here is the intersection between the Columbia River, its tributary the Methow River, and the Chief Joseph Dam."
+river7,branch6,,,River,The Methow River,"A tributary in north-central Washington, it's renowned for its pristine environment and recreational opportunities."
+dam5,branch6,,branch7,Dam,Chief Joseph Dam,"One of the largest dams in the U.S., it produces more electricity than any other dam without fish passage."
+branch7,dam5,dam6,river8,Branch,Columbia River,"Here is the intersection between the Columbia River, its tributary the Okanogan River, and the Grand Coulee Dam."
+river8,branch7,,,River,The Okanogan River,"Connecting Okanagan Lake in Canada to the Columbia, it's an important fish migration corridor."
+dam6,branch7,,branch8,Dam,Grand Coulee Dam,"The largest hydropower producer in the U.S., it was a key project of the New Deal, completed in 1942."
+branch8,dam6,river9,branch9,Branch,Columbia River,Here is the intersection between the Columbia River and its tributary the Spokane River.
+river9,branch8,subbranch1,river10,River,The Spokane River,"Flowing out of Lake Coeur d'Alene in Idaho, it merges with the Columbia in eastern Washington."
+subbranch1,river9,river11,subbranch2,Branch,Spokane River,Here is the intersection of the Spokane River and its tributary Deep Creek.
+river10,river9,,,River,The Little Spokane River,"Known for its serene environment, it provides critical habitat for wildlife and is popular for kayaking and hiking."
+river11,subbranch1,,,River,Deep Creek,"Originating in the basaltic terrain west of Spokane, it joins the Spokane River near the Spokane Falls, adding seasonal flows."
+subbranch2,subbranch1,river12,subbranch3,Branch,Spokane River,Here is the intersection of the Spokane River and its tributary Latah Creek.
+river12,subbranch2,,,River,Latah Creek,"Flowing through Idaho and Washington, it carries significant agricultural runoff and is a focus of local water quality improvement efforts."
+subbranch3,subbranch2,river13,,Branch,Spokane River,Here is the intersection of the Spokane River and its tributary Cougar Creek.
+river13,subbranch3,,,River,Cougar Creek,"A smaller tributary that contributes seasonal runoff, it plays a role in local drainage and habitat diversity."
+branch9,branch8,river14,end,Branch,Columbia River,Here is the intersection between the Columbia River and its tributary the Koutenai River.
+river14,branch9,,,River,The Kootenai River,"Rising in British Columbia, it flows through Montana and Idaho before re-entering Canada to join the Columbia."
+end,branch9,,,Branch,Columbia River,You have reached the end of the Columbia River!
