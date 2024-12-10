@@ -158,7 +158,7 @@ class TraversalLogic {
 
 //---------------------------------------------------------------------------------------------//
 
-int main() {
+/*int main() {
     BinaryTree columbiaWatershed;
     DataReader reader;
 
@@ -169,3 +169,4 @@ int main() {
     
     return 0;   
 }
+*/
