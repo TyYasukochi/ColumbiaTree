@@ -1,3 +1,8 @@
+
+/*
+Before running tests comment out main() from tree.cpp and move 
+*/
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -78,11 +83,38 @@ void testDataReaderReadCSV() {
     cout << "testDataReaderReadCSV passed.\n";
 }
 
+void testTraversalLogicNavigation() {
+    string id1 = "start", parent1 = "", left1 = "branch1", right1 = "", type1 = "Root", name1 = "Columbia River", info1 = "Welcome to the entrance of the Columbia River.";
+    Node* root = new Node(id1, parent1, left1, right1, type1, name1, info1);
+
+    string id2 = "branch1", parent2 = "start", left2 = "branch2", right2 = "river1", type2 = "Branch", name2 = "Branch Node", info2 = "Details about Branch Node.";
+    Node* branch1 = new Node(id2, parent2, left2, right2, type2, name2, info2);
+
+    string id3 = "branch2", parent3 = "branch1", left3 = "", right3 = "", type3 = "Branch", name3 = "Leaf Node", info3 = "Details about Leaf Node.";
+    Node* branch2 = new Node(id3, parent3, left3, right3, type3, name3, info3);
+
+    BinaryTree tree;
+    tree.setRoot(root);
+    tree.addNode(root);
+    tree.addNode(branch1);
+    tree.addNode(branch2);
+
+    TraversalLogic logic(tree.getRoot(), tree);
+
+    assert(tree.getNode(root->getLeft())->getName() == "Branch Node");
+    assert(tree.getNode(branch1->getLeft())->getName() == "Leaf Node");
+
+    cout << "testTraversalLogicNavigation passed.\n";
+}
+
+
+
 int main() {
     testNodeCreateAndGetAttributes();
     testBinaryTreeAddAndRetrieveNode();
     testBinaryTreeSetAndGetRoot();
     testDataReaderReadCSV();
+    testTraversalLogicNavigation();
 
     cout << "All tests passed.\n";
     return 0;
